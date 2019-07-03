@@ -49,7 +49,8 @@ Input_On()
 	stty echo
 }
 
-Output_Off() {
+Output_Off()
+{
 	if [[ $verbose == "1" ]]; then
 		"$@"
 	else
@@ -159,20 +160,28 @@ Import_Variables()
 	chmod +x /tmp/macos-downloader-resources-master/resources/var.sh
 	source /tmp/macos-downloader-resources-master/resources/var.sh
 
+	update_option="${installer_choice}_update_option"
+	combo_update_option="${installer_choice}_combo_update_option"
+
 	installer_url="${installer_choice}_installer_url"
 	installer_key="${!installer_url#*/*/}"
 	installer_key="${installer_key%/*}"
-	update_key="${update_url#*/*/}"
+
+	update_url="${installer_choice}_update_url"
+	update_key="${!update_url#*/*/}"
 	update_key="${update_key%/*}"
-	combo_update_key="${combo_update_url#*/*/}"
+
+	combo_update_url="${installer_choice}_combo_update_url"
+	combo_update_key="${!combo_update_url#*/*/}"
 	combo_update_key="${combo_update_key%/*}"
 
 	curl -L -s -o /tmp/$installer_key.dist https://swdist.apple.com/content/downloads/${!installer_url}/$installer_key.English.dist
-	curl -L -s -o /tmp/$update_key.dist https://swdist.apple.com/content/downloads/$update_url/$update_key.English.dist
+	curl -L -s -o /tmp/$update_key.dist https://swdist.apple.com/content/downloads/${!update_url}/$update_key.English.dist
 
 	installer_name="$(grep "\"SU_TITLE\"\ =" /tmp/$installer_key.dist)"
 	installer_name="${installer_name#*SU_TITLE*=*\"}"
 	installer_name="${installer_name%\"*}"
+
 	update_version="$(grep -A1 "ProductVersion" /tmp/$update_key.dist)"
 	update_version="${update_version#*<string>}"
 	update_version="${update_version%</string>*}"
@@ -183,10 +192,10 @@ Input_Operation_Download()
 	echo ${text_message}"/ What operation would you like to run?"${erase_style}
 	echo ${text_message}"/ Input an operation number."${erase_style}
 	echo ${text_message}"/     1 - Installer"${erase_style}
-	if [[ $update_option == "1" && $installer_choice == "m" ]]; then
+	if [[ ${!update_option} == "1" ]]; then
 		echo ${text_message}"/     2 - Update"${erase_style}
 	fi
-	if [[ $combo_update_option == "1" && $installer_choice == "m" ]]; then
+	if [[ ${!combo_update_option} == "1" ]]; then
 		echo ${text_message}"/     3 - Combo Update"${erase_style}
 	fi
 	Input_On
@@ -250,14 +259,14 @@ Download_Update()
 	mkdir /tmp/"$update_name$update_version"
 	update_folder="/tmp/$update_name$update_version"
 
-	curl -L -s -o "$update_folder"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/$update_url/macOSBrain.pkg
-	curl -L -s -o "$update_folder"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/$update_url/SecureBoot.pkg
-	curl -L -s -o "$update_folder"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/$update_url/EmbeddedOSFirmware.pkg
-	curl -L -s -o "$update_folder"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/$update_url/FirmwareUpdate.pkg
-	curl -L -s -o "$update_folder"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/$update_url/FullBundleUpdate.pkg
-	curl -L -s -o "$update_folder"/$update_name$update_version.pkg http://swcdn.apple.com/content/downloads/$update_url/$update_name$update_version.pkg
-	curl -L -s -o "$update_folder"/$update_name$update_version.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/$update_url/$update_name$update_version.RecoveryHDUpdate.pkg
-	curl -L -s -o "$update_folder"/$update_key.dist https://swdist.apple.com/content/downloads/$update_url/$update_key.English.dist
+	curl -L -s -o "$update_folder"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${!update_url}/macOSBrain.pkg
+	curl -L -s -o "$update_folder"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${!update_url}/SecureBoot.pkg
+	curl -L -s -o "$update_folder"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${!update_url}/EmbeddedOSFirmware.pkg
+	curl -L -s -o "$update_folder"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${!update_url}/FirmwareUpdate.pkg
+	curl -L -s -o "$update_folder"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${!update_url}/FullBundleUpdate.pkg
+	curl -L -s -o "$update_folder"/$update_name$update_version.pkg http://swcdn.apple.com/content/downloads/${!update_url}/$update_name$update_version.pkg
+	curl -L -s -o "$update_folder"/$update_name$update_version.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${!update_url}/$update_name$update_version.RecoveryHDUpdate.pkg
+	curl -L -s -o "$update_folder"/$update_key.dist https://swdist.apple.com/content/downloads/${!update_url}/$update_key.English.dist
 	echo ${move_up}${erase_line}${text_success}"+ Downloaded update files."${erase_style}
 }
 

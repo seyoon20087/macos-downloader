@@ -9,3 +9,4 @@ macOS Downloader is a command line for downloading macOS installers and beta upd
 - [RMC Website](https://sites.google.com/view/rmc-team/home)
 - [RMC Twitter](https://twitter.com/_rmcteam)
 - ~~More Documentation~~ Coming Soon
+

@@ -166,10 +166,12 @@ Import_Variables()
 	installer_url="${installer_choice}_installer_url"
 	installer_key="${!installer_url#*/*/}"
 	installer_key="${installer_key%/*}"
+	installer_key="${installer_key%-A*}"
 
 	update_url="${installer_choice}_update_url"
 	update_key="${!update_url#*/*/}"
 	update_key="${update_key%/*}"
+	update_key="${update_key%-A*}"
 
 	combo_update_url="${installer_choice}_combo_update_url"
 	combo_update_key="${!combo_update_url#*/*/}"

@@ -215,7 +215,7 @@ Input_Version()
 
 Import_Catalog()
 {
-	# curl -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
+	curl -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
 
 	chmod +x /tmp/Catalog.sh
 	source /tmp/Catalog.sh

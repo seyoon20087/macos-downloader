@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 parameters="${1}${2}${3}${4}${5}${6}${7}${8}${9}"
 
@@ -44,6 +44,7 @@ Input_Off()
 {
 	stty -echo
 }
+
 Input_On()
 {
 	stty echo
@@ -60,48 +61,55 @@ Output_Off()
 
 Check_Environment()
 {
-	echo ${text_progress}"> Checking system environment."${erase_style}
-	if [ -d /Install\ *.app ]; then
-		environment="installer"
-	fi
-	if [ ! -d /Install\ *.app ]; then
-		environment="system"
-	fi
-	echo ${move_up}${erase_line}${text_success}"+ Checked system environment."${erase_style}
+	echo -e ${text_progress}"> Checking system environment."${erase_style}
+
+		if [ -d /Install\ *.app ]; then
+			environment="installer"
+		fi
+
+		if [ ! -d /Install\ *.app ]; then
+			environment="system"
+		fi
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Checked system environment."${erase_style}
 }
 
 Check_Root()
 {
-	echo ${text_progress}"> Checking for root permissions."${erase_style}
+	echo -e ${text_progress}"> Checking for root permissions."${erase_style}
+
 	if [[ $environment == "installer" ]]; then
 		root_check="passed"
-		echo ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
+		echo -e ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
 	else
+
 		if [[ $(whoami) == "root" && $environment == "system" ]]; then
 			root_check="passed"
-			echo ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
+			echo -e ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
 		fi
+
 		if [[ ! $(whoami) == "root" && $environment == "system" ]]; then
 			root_check="failed"
-			echo ${text_error}"- Root permissions check failed."${erase_style}
-			echo ${text_message}"/ Run this tool with root permissions."${erase_style}
-			Input_On
-			exit
+			echo -e ${text_error}"- Root permissions check failed."${erase_style}
 		fi
+
 	fi
 }
 
 Check_Resources()
 {
-	echo ${text_progress}"> Checking for resources."${erase_style}
+	echo -e ${text_progress}"> Checking for resources."${erase_style}
+
 	if [[ -d "$resources_path" ]]; then
 		resources_check="passed"
-		echo ${move_up}${erase_line}${text_success}"+ Resources check passed."${erase_style}
+		echo -e ${move_up}${erase_line}${text_success}"+ Resources check passed."${erase_style}
 	fi
+
 	if [[ ! -d "$resources_path" ]]; then
 		resources_check="failed"
-		echo ${text_error}"- Resources check failed."${erase_style}
-		echo ${text_message}"/ Run this tool with the required resources."${erase_style}
+		echo -e ${text_error}"- Resources check failed."${erase_style}
+		echo -e ${text_message}"/ Run this tool with the required resources."${erase_style}
+
 		Input_On
 		exit
 	fi
@@ -109,12 +117,14 @@ Check_Resources()
 
 Check_Internet()
 {
-	echo ${text_progress}"> Checking for internet conectivity."${erase_style}
-	if [[ $(ping -c 5 www.google.com) == *transmitted* && $(ping -c 5 www.google.com) == *received* ]]; then
-		echo ${move_up}${erase_line}${text_success}"+ Integrity conectivity check passed."${erase_style}
+	echo -e ${text_progress}"> Checking for internet conectivity."${erase_style}
+
+	if [[ $(ping -c 2 www.google.com) == *transmitted* && $(ping -c 2 www.google.com) == *received* ]]; then
+		echo -e ${move_up}${erase_line}${text_success}"+ Integrity conectivity check passed."${erase_style}
 	else
-		echo ${text_error}"- Integrity conectivity check failed."${erase_style}
-		echo ${text_message}"/ Run this tool while connected to the internet."${erase_style}
+		echo -e ${text_error}"- Integrity conectivity check failed."${erase_style}
+		echo -e ${text_message}"/ Run this tool while connected to the internet."${erase_style}
+
 		Input_On
 		exit
 	fi
@@ -122,21 +132,42 @@ Check_Internet()
 
 Input_Folder()
 {
-	echo ${text_message}"/ What save folder would you like to use?"${erase_style}
-	echo ${text_message}"/ Input a save folder path."${erase_style}
+	echo -e ${text_message}"/ What save folder would you like to use?"${erase_style}
+	echo -e ${text_message}"/ Input a save folder path."${erase_style}
 
 	Input_On
 	read -e -p "/ " save_folder
 	Input_Off
 }
 
-Input_Operation_Version()
+Check_Write()
 {
-	echo ${text_message}"/ What operation would you like to run?"${erase_style}
-	echo ${text_message}"/ Input an operation number."${erase_style}
-	echo ${text_message}"/     1 - Catalina"${erase_style}
-	echo ${text_message}"/     2 - Mojave"${erase_style}
-	echo ${text_message}"/     3 - High Sierra"${erase_style}
+	echo -e ${text_progress}"> Checking for write permissions on save folder."${erase_style}
+
+	if [[ -w "$save_folder" ]]; then
+		write_check="passed"
+		echo -e ${move_up}${erase_line}${text_success}"+ Write permissions check passed."${erase_style}
+	else
+		root_check="failed"
+		echo -e ${text_error}"- Write permissions check failed."${erase_style}
+		echo -e ${text_message}"/ Run this tool with a writable save folder."${erase_style}
+
+		Input_On
+		exit
+	fi
+}
+
+Input_Version()
+{
+	echo -e ${text_message}"/ What operation would you like to run?"${erase_style}
+	echo -e ${text_message}"/ Input an operation number."${erase_style}
+	echo -e ${text_message}"/     1 - Catalina"${erase_style}
+	echo -e ${text_message}"/     2 - Mojave"${erase_style}
+	echo -e ${text_message}"/     3 - High Sierra"${erase_style}
+	echo -e ${text_message}"/     4 - Sierra"${erase_style}
+	echo -e ${text_message}"/     5 - El Capitan"${erase_style}
+	echo -e ${text_message}"/     6 - Yosemite"${erase_style}
+
 
 	Input_On
 	read -e -p "/ " operation_version
@@ -145,61 +176,80 @@ Input_Operation_Version()
 	if [[ $operation_version == "1" ]]; then
 		installer_choice="c"
 	fi
+
 	if [[ $operation_version == "2" ]]; then
 		installer_choice="m"
 	fi
+
 	if [[ $operation_version == "3" ]]; then
 		installer_choice="hs"
 	fi
+
+	if [[ $operation_version == "4" ]]; then
+		installer_choice="s"
+	fi
+
+	if [[ $operation_version == "5" ]]; then
+		installer_choice="ec"
+	fi
+
+	if [[ $operation_version == "6" ]]; then
+		installer_choice="y"
+	fi
+
+	if [[ $operation_version == [1-3] ]]; then
+		Import_Catalog
+		Import_Second_Catalog
+		Input_Download
+		Import_Second_Catalog
+	fi
+
+	if [[ $operation_version == [4-6] ]]; then
+		Import_Catalog
+		Import_Second_Catalog
+		Download_Installer_2
+		Prepare_Installer_2
+		Import_Second_Catalog
+	fi
 }
 
-Import_Variables()
+Import_Catalog()
 {
-	curl -L -s -o /tmp/resources.zip https://github.com/rmc-team/macos-downloader-resources/archive/master.zip
-	unzip -q /tmp/resources.zip -d /tmp
-	chmod +x /tmp/macos-downloader-resources-master/resources/var.sh
-	source /tmp/macos-downloader-resources-master/resources/var.sh
+	# curl -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
+
+	chmod +x /tmp/Catalog.sh
+	source /tmp/Catalog.sh
 
 	update_option="${installer_choice}_update_option"
 	combo_update_option="${installer_choice}_combo_update_option"
 
 	installer_url="${installer_choice}_installer_url"
-	installer_key="${!installer_url#*/*/}"
-	installer_key="${installer_key%/*}"
-	installer_key="${installer_key%-A*}"
+	installer_key="${installer_choice}_installer_key"
+	installer_name="${installer_choice}_installer_name"
+	installer_version="${installer_choice}_installer_version"
 
 	update_url="${installer_choice}_update_url"
-	update_key="${!update_url#*/*/}"
-	update_key="${update_key%/*}"
-	update_key="${update_key%-A*}"
+	update_key="${installer_choice}_update_key"
+	update_version="${installer_choice}_update_version"
 
 	combo_update_url="${installer_choice}_combo_update_url"
-	combo_update_key="${!combo_update_url#*/*/}"
-	combo_update_key="${combo_update_key%/*}"
-
-	curl -L -s -o /tmp/$installer_key.dist https://swdist.apple.com/content/downloads/${!installer_url}/$installer_key.English.dist
-	curl -L -s -o /tmp/$update_key.dist https://swdist.apple.com/content/downloads/${!update_url}/$update_key.English.dist
-
-	installer_name="$(grep "\"SU_TITLE\"\ =" /tmp/$installer_key.dist)"
-	installer_name="${installer_name#*SU_TITLE*=*\"}"
-	installer_name="${installer_name%\"*}"
-
-	update_version="$(grep -A1 "ProductVersion" /tmp/$update_key.dist)"
-	update_version="${update_version#*<string>}"
-	update_version="${update_version%</string>*}"
+	combo_update_key="${installer_choice}_combo_update_key"
 }
 
-Input_Operation_Download()
+Input_Download()
 {
-	echo ${text_message}"/ What operation would you like to run?"${erase_style}
-	echo ${text_message}"/ Input an operation number."${erase_style}
-	echo ${text_message}"/     1 - Installer"${erase_style}
+	echo -e ${text_message}"/ What operation would you like to run?"${erase_style}
+	echo -e ${text_message}"/ Input an operation number."${erase_style}
+	echo -e ${text_message}"/     1 - Installer"${erase_style}
+
 	if [[ ${!update_option} == "1" ]]; then
-		echo ${text_message}"/     2 - Update"${erase_style}
+		echo -e ${text_message}"/     2 - Beta Update"${erase_style}
 	fi
+
 	if [[ ${!combo_update_option} == "1" ]]; then
-		echo ${text_message}"/     3 - Combo Update"${erase_style}
+		echo -e ${text_message}"/     3 - Beta Combo Update"${erase_style}
 	fi
+
 	Input_On
 	read -e -p "/ " operation_download
 	Input_Off
@@ -208,85 +258,286 @@ Input_Operation_Download()
 		Download_Installer
 		Prepare_Installer
 	fi
+
 	if [[ $operation_download == "2" ]]; then
 		update_name="macOSUpd"
-		update_url="$update_url"
-		update_key="$update_key"
+		update_url="${!update_url}"
+		update_key="${!update_key}"
+		update_version="${!update_version}"
+	fi
+
+	if [[ $operation_download == "3" ]]; then
+		update_name="macOSUpdCombo"
+		update_url="${!combo_update_url}"
+		update_key="${!combo_update_key}"
+		update_version="${!combo_update_version}"
+	fi
+
+	if [[ $operation_download == [2-3] ]]; then
 		Download_Update
 		Prepare_Update
 	fi
-	if [[ $operation_download == "3" ]]; then
-		update_name="macOSUpdCombo"
-		update_url="$combo_update_url"
-		update_key="$combo_update_key"
-		Download_Update
-		Prepare_Update
+}
+
+Import_Second_Catalog()
+{
+	if [[ -d /tmp/"${!installer_name}" ]]; then
+		chmod +x /tmp/"${!installer_name}"/Catalog.sh
+		source /tmp/"${!installer_name}"/Catalog.sh
+	fi
+
+	if [[ -d /tmp/"${update_name}${update_version}" ]]; then
+		chmod +x /tmp/"${update_name}${update_version}"/Catalog.sh
+		source /tmp/"${update_name}${update_version}"/Catalog.sh
 	fi
 }
 
 Download_Installer()
 {
-	echo ${text_progress}"> Downloading installer files."${erase_style}
-	mkdir /tmp/"Install $installer_name"
-	installer_folder="/tmp/Install $installer_name"
+	echo -e ${text_progress}"> Downloading installer files."${erase_style}
 
-	curl -L -s -o "$installer_folder"/InstallAssistantAuto.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallAssistantAuto.pkg
-	curl -L -s -o "$installer_folder"/InstallESDDmg.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
-	curl -L -s -o "$installer_folder"/RecoveryHDMetaDmg.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/RecoveryHDMetaDmg.pkg
-	echo ${move_up}${erase_line}${text_success}"+ Downloaded installer files."${erase_style}
+		if [[ ! -d /tmp/"${!installer_name}" ]]; then
+			mkdir /tmp/"${!installer_name}"
+		fi
+
+		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+	
+		if [[ ! "$InstallAssistantAuto_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/InstallAssistantAuto.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallAssistantAuto.pkg
+			echo -e "InstallAssistantAuto_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+	
+		if [[ ! "$AppleDiagnostics_chunklist" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.chunklist
+			echo -e "AppleDiagnostics_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+	
+		if [[ ! "$AppleDiagnostics_dmg" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.dmg
+			echo -e "AppleDiagnostics_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+	
+		if [[ ! "$BaseSystem_chunklist" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/BaseSystem.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.chunklist
+			echo -e "BaseSystem_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+	
+		if [[ ! "$BaseSystem_dmg" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/BaseSystem.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.dmg
+			echo -e "BaseSystem_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+	
+		if [[ ! "$InstallESD_dmg" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/InstallESD.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
+			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+	
+		if [[ ! "$InstallInfo_plist" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/InstallInfo.plist http://swcdn.apple.com/content/downloads/${!installer_url}/InstallInfo.plist
+			echo -e "InstallInfo_plist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		echo -e "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Downloaded installer files."${erase_style}
 }
 
 Prepare_Installer()
 {
-	echo ${text_progress}"> Preparing installer."${erase_style}
-	cd "$save_folder"
+	echo -e ${text_progress}"> Preparing installer."${erase_style}
 
-	chmod +x "$resources_path"/pbzx
-	"$resources_path"/pbzx "$installer_folder"/InstallAssistantAuto.pkg | Output_Off cpio -i
+		echo -e "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
-	cp "$installer_folder"/InstallESDDmg.pkg "$save_folder"/"Install $installer_name.app"/Contents/SharedSupport/InstallESD.dmg
-	mv "$installer_folder"/RecoveryHDMetaDmg.pkg "$installer_folder"/RecoveryHDMeta.dmg
+		cd /tmp/"${!installer_name}"
+	
+		if [[ ! "$InstallAssistantAuto_pkg" == "2" ]]; then
+			"$resources_path"/pbzx /tmp/"${!installer_name}"/InstallAssistantAuto.pkg | Output_Off cpio -i
+			echo -e "InstallAssistantAuto_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
 
-	Output_Off hdiutil attach "$installer_folder"/RecoveryHDMeta.dmg -mountpoint /tmp/RecoveryHDMeta -nobrowse
-	cp -R /tmp/RecoveryHDMeta/ "$save_folder"/"Install $installer_name.app"/Contents/SharedSupport/
-	Output_Off hdiutil detach /tmp/RecoveryHDMeta
 
-	touch "$save_folder"/"Install $installer_name.app"
-	echo ${move_up}${erase_line}${text_success}"+ Prepared installer."${erase_style}
+		if [[ ! "$InstallAssistantAuto_pkg" == "3" ]]; then
+			mv /tmp/"${!installer_name}"/"${!installer_name}".app "$save_folder"
+			echo -e "InstallAssistantAuto_pkg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$AppleDiagnostics_chunklist" == "3" ]]; then
+			mv /tmp/"${!installer_name}"/AppleDiagnostics.chunklist "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			echo -e "AppleDiagnostics_chunklist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$AppleDiagnostics_dmg" == "3" ]]; then
+			mv /tmp/"${!installer_name}"/AppleDiagnostics.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			echo -e "AppleDiagnostics_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$BaseSystem_chunklist" == "3" ]]; then
+			mv /tmp/"${!installer_name}"/BaseSystem.chunklist "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			echo -e "BaseSystem_chunklist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$BaseSystem_dmg" == "3" ]]; then
+			mv /tmp/"${!installer_name}"/BaseSystem.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			echo -e "BaseSystem_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$InstallESD_dmg" == "3" ]]; then
+			mv /tmp/"${!installer_name}"/InstallESD.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			echo -e "InstallESD_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$InstallInfo_plist" == "3" ]]; then
+			mv /tmp/"${!installer_name}"/InstallInfo.plist "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			echo -e "InstallInfo_plist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		echo -e "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Prepared installer."${erase_style}
+}
+
+Download_Installer_2()
+{
+	echo -e ${text_progress}"> Downloading installer files."${erase_style}
+
+		if [[ ! -d /tmp/"${!installer_name}" ]]; then
+			mkdir /tmp/"${!installer_name}"
+		fi
+
+		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+	
+		if [[ ! "$Install_dmg" == "1" ]]; then
+			curl -L -s -o /tmp/"${!installer_name}"/"${!installer_name}".dmg ${!installer_url}
+			echo -e "Install_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		echo -e "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Downloaded installer files."${erase_style}
+}
+
+Prepare_Installer_2()
+{
+	echo -e ${text_progress}"> Preparing installer."${erase_style}
+
+		echo -e "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		Output_Off hdiutil attach /tmp/"${!installer_name}"/"${!installer_name}".dmg -mountpoint /tmp/"${!installer_name}"_dmg -nobrowse
+
+		installer_pkg="$(ls /tmp/"${!installer_name}"_dmg)"
+		installer_pkg_partial="${installer_pkg%.*}"
+
+		if [[ ! "$Install_pkg" == "1" ]]; then
+			pkgutil --expand /tmp/"${!installer_name}"_dmg/"${installer_pkg}" /tmp/"${!installer_name}"/"${installer_pkg_partial}"
+			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$Install_pkg" == "2" ]]; then
+			tar -xf /tmp/"${!installer_name}"/"${installer_pkg_partial}"/"${installer_pkg}"/Payload -C "$save_folder"
+			echo -e "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$InstallESD_dmg" == "1" ]]; then
+			mv /tmp/"${!installer_name}"/"${installer_pkg_partial}"/"${installer_pkg}"/InstallESD.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		Output_Off hdiutil detach /tmp/"${!installer_name}"_dmg
+		echo -e "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Prepared installer."${erase_style}
 }
 
 Download_Update()
 {
-	echo ${text_progress}"> Downloading update files."${erase_style}
-	mkdir /tmp/"$update_name$update_version"
-	update_folder="/tmp/$update_name$update_version"
+	echo -e ${text_progress}"> Downloading update files."${erase_style}
 
-	curl -L -s -o "$update_folder"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${!update_url}/macOSBrain.pkg
-	curl -L -s -o "$update_folder"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${!update_url}/SecureBoot.pkg
-	curl -L -s -o "$update_folder"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${!update_url}/EmbeddedOSFirmware.pkg
-	curl -L -s -o "$update_folder"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${!update_url}/FirmwareUpdate.pkg
-	curl -L -s -o "$update_folder"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${!update_url}/FullBundleUpdate.pkg
-	curl -L -s -o "$update_folder"/$update_name$update_version.pkg http://swcdn.apple.com/content/downloads/${!update_url}/$update_name$update_version.pkg
-	curl -L -s -o "$update_folder"/$update_name$update_version.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${!update_url}/$update_name$update_version.RecoveryHDUpdate.pkg
-	curl -L -s -o "$update_folder"/$update_key.dist https://swdist.apple.com/content/downloads/${!update_url}/$update_key.English.dist
-	echo ${move_up}${erase_line}${text_success}"+ Downloaded update files."${erase_style}
+		if [[ ! -d /tmp/"${update_name}${update_version}" ]]; then
+			mkdir /tmp/"${update_name}${update_version}"
+		fi
+
+		echo -e "update_download=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+
+		if [[ ! "$macOSBrain_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${update_url}/macOSBrain.pkg
+			echo -e "macOSBrain_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		if [[ ! "$FirmwareUpdate_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FirmwareUpdate.pkg
+			echo -e "FirmwareUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		if [[ ! "$FullBundleUpdate_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FullBundleUpdate.pkg
+			echo -e "FullBundleUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		if [[ ! "$EmbeddedOSFirmware_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${update_url}/EmbeddedOSFirmware.pkg
+			echo -e "EmbeddedOSFirmware_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		if [[ ! "$SecureBoot_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${update_url}/SecureBoot.pkg
+			echo -e "SecureBoot_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		if [[ ! "$macOSUpd_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.pkg
+			echo -e "macOSUpd_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		if [[ ! "$macOSUpd_RecoveryHDUpdate_pkg" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.RecoveryHDUpdate.pkg
+			echo -e "macOSUpd_RecoveryHDUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		if [[ ! "$Distribution_dist" == "1" ]]; then
+			curl -L -s -o /tmp/"${update_name}${update_version}"/${update_key}.dist https://swdist.apple.com/content/downloads/${update_url}/${update_key}.English.dist
+			echo -e "Distribution_dist=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		echo -e "update_download=\"2\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Downloaded update files."${erase_style}
 }
 
 Prepare_Update()
 {
-	echo ${text_progress}"> Preparing update."${erase_style}
-	sed -i '' 's|<pkg-ref id="com\.apple\.pkg\.update\.os\.10\.14\.[0-9]\{1,\}Patch\.[a-zA-Z0-9]\{1,\}" auth="Root" packageIdentifier="com\.apple\.pkg\.update\.os\.10\.14\.[0-9]\{1,\}\.[a-zA-Z0-9]\{1,\}" onConclusion="RequireRestart">macOSUpd10\.14\.[0-9]\{1,\}Patch\.pkg<\/pkg-ref>||' "$update_folder"/$update_key.dist
-	Output_Off productbuild --distribution "$update_folder"/$update_key.dist --package-path "$update_folder" "$save_folder/$update_name$update_version.pkg"
-	echo ${move_up}${erase_line}${text_success}"+ Prepared update."${erase_style}
+	echo -e ${text_progress}"> Preparing update."${erase_style}
+
+		echo -e "update_prepare=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+
+		sed -i '' 's|<pkg-ref id="com\.apple\.pkg\.update\.os\.10\.14\.[0-9]\{1,\}Patch\.[a-zA-Z0-9]\{1,\}" auth="Root" packageIdentifier="com\.apple\.pkg\.update\.os\.10\.14\.[0-9]\{1,\}\.[a-zA-Z0-9]\{1,\}" onConclusion="RequireRestart">macOSUpd10\.14\.[0-9]\{1,\}Patch\.pkg<\/pkg-ref>||' /tmp/"${update_name}${update_version}"/${update_key}.dist
+
+		if [[ ! "$productbuild" == "1" ]]; then
+			Output_Off productbuild --distribution /tmp/"${update_name}${update_version}"/${update_key}.dist --package-path /tmp/"${update_name}${update_version}" "$save_folder/${update_name}${update_version}.pkg"
+			echo -e "productbuild=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		fi
+
+		echo -e "update_prepare=\"2\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Prepared update."${erase_style}
 }
 
 End()
 {
-	echo ${text_progress}"> Removing temporary files."${erase_style}
-	Output_Off rm -R /tmp/*
-	echo ${move_up}${erase_line}${text_success}"+ Removed temporary files."${erase_style}
+	echo -e ${text_progress}"> Removing temporary files."${erase_style}
 
-	echo ${text_message}"/ Thank you for using macOS Downloader."${erase_style}
+		Output_Off rm /tmp/Catalog.sh
+
+		if [[ "$installer_prepare" == "2" ]]; then
+			Output_Off rm -R /tmp/"${!installer_name}"
+		fi
+
+		if [[ "$update_prepare" == "2" ]]; then
+			Output_Off rm -R /tmp/"${update_name}${update_version}"
+		fi
+
+	echo -e ${move_up}${erase_line}${text_success}"+ Removed temporary files."${erase_style}
+
+	echo -e ${text_message}"/ Thank you for using macOS Downloader."${erase_style}
+
 	Input_On
 	exit
 }
@@ -300,7 +551,6 @@ Check_Root
 Check_Resources
 Check_Internet
 Input_Folder
-Input_Operation_Version
-Import_Variables
-Input_Operation_Download
+Check_Write
+Input_Version
 End

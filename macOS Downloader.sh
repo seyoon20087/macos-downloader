@@ -331,11 +331,6 @@ Download_Installer()
 			curl -L -s -o /tmp/"${!installer_name}"/InstallESD.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
 			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
-	
-		if [[ ! "$InstallInfo_plist" == "1" ]]; then
-			curl -L -s -o /tmp/"${!installer_name}"/InstallInfo.plist http://swcdn.apple.com/content/downloads/${!installer_url}/InstallInfo.plist
-			echo -e "InstallInfo_plist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
-		fi
 
 		echo -e "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
@@ -384,11 +379,6 @@ Prepare_Installer()
 		if [[ ! "$InstallESD_dmg" == "3" ]]; then
 			mv /tmp/"${!installer_name}"/InstallESD.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
 			echo -e "InstallESD_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
-		fi
-
-		if [[ ! "$InstallInfo_plist" == "3" ]]; then
-			mv /tmp/"${!installer_name}"/InstallInfo.plist "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
-			echo -e "InstallInfo_plist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		echo -e "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh

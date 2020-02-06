@@ -427,7 +427,7 @@ Prepare_Installer_2()
 		fi
 
 		if [[ ! "$InstallESD_dmg" == "1" ]]; then
-			mv /tmp/"${!installer_name}"/"${installer_pkg_partial}"/"${installer_pkg}"/InstallESD.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			cp /tmp/"${!installer_name}"_dmg/"${installer_pkg}" "$save_folder"/"${!installer_name}".app/Contents/SharedSupport/InstallESD.dmg
 			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 

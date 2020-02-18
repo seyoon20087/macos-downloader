@@ -38,7 +38,7 @@ m_combo_update_key="null"
 
 
 c_update_option="1"
-c_combo_update_option="0"
+c_combo_update_option="1"
 
 c_installer_url="47/20/061-44387-A_FV9KA9D9EY/g6dlznrbw0mchuh9dvusbzd3ld7prg4h3z"
 c_installer_key="061-44387"

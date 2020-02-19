@@ -38,16 +38,16 @@ m_combo_update_key="null"
 
 
 c_update_option="1"
-c_combo_update_option="1"
+c_combo_update_option="0"
 
 c_installer_url="47/20/061-44387-A_FV9KA9D9EY/g6dlznrbw0mchuh9dvusbzd3ld7prg4h3z"
 c_installer_key="061-44387"
 c_installer_name="Install macOS Catalina"
 c_installer_version="10.15.3"
 
-c_update_url="06/32/061-73025-A_6CE2Z9R9Y4/pzohncx1cho8m5v5xtpqzkkpu2vwrsi4iq"
-c_update_key="061-73025"
+c_update_url="42/18/061-26768-A_O5FA7ZHEQL/u0d891tovprnjtomijmqwl1mdtnb25k3ar"
+c_update_key="061-26768"
 c_update_version="10.15.4"
 
-c_combo_update_url="46/30/061-73022-A_AKJ3GCB3K3/7blh5vjzyropqbjqtnlf2fbmd6xueaevok"
-c_combo_update_key="061-73022"
+c_combo_update_url="null"
+c_combo_update_key="null"

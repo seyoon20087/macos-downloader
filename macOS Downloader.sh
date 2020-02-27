@@ -354,39 +354,39 @@ Download_Installer()
 			mkdir /tmp/"${!installer_name}"
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 	
 		if [[ ! "$InstallAssistantAuto_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${!installer_name}"/InstallAssistantAuto.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallAssistantAuto.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "InstallAssistantAuto_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "InstallAssistantAuto_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$AppleDiagnostics_chunklist" == "1" ]]; then
 			Curl -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.chunklist
-			echo -e $(date "+%b %m %H:%M:%S") "AppleDiagnostics_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "AppleDiagnostics_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$AppleDiagnostics_dmg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.dmg
-			echo -e $(date "+%b %m %H:%M:%S") "AppleDiagnostics_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "AppleDiagnostics_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$BaseSystem_chunklist" == "1" ]]; then
 			Curl -L -s -o /tmp/"${!installer_name}"/BaseSystem.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.chunklist
-			echo -e $(date "+%b %m %H:%M:%S") "BaseSystem_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "BaseSystem_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$BaseSystem_dmg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${!installer_name}"/BaseSystem.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.dmg
-			echo -e $(date "+%b %m %H:%M:%S") "BaseSystem_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "BaseSystem_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$InstallESD_dmg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${!installer_name}"/InstallESD.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Downloaded installer files."${erase_style}
 }
@@ -395,48 +395,48 @@ Prepare_Installer()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Preparing installer."${erase_style}
 
-		echo -e $(date "+%b %m %H:%M:%S") "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
 		cd /tmp/"${!installer_name}"
 	
 		if [[ ! "$InstallAssistantAuto_pkg" == "2" ]]; then
 			chmod +x "$resources_path"/pbzx
 			"$resources_path"/pbzx /tmp/"${!installer_name}"/InstallAssistantAuto.pkg | Output_Off cpio -i
-			echo -e $(date "+%b %m %H:%M:%S") "InstallAssistantAuto_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "InstallAssistantAuto_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 
 		if [[ ! "$InstallAssistantAuto_pkg" == "3" ]]; then
 			mv /tmp/"${!installer_name}"/"${!installer_name}".app "$save_folder"
-			echo -e $(date "+%b %m %H:%M:%S") "InstallAssistantAuto_pkg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "InstallAssistantAuto_pkg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$AppleDiagnostics_chunklist" == "3" ]]; then
 			mv /tmp/"${!installer_name}"/AppleDiagnostics.chunklist "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
-			echo -e $(date "+%b %m %H:%M:%S") "AppleDiagnostics_chunklist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "AppleDiagnostics_chunklist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$AppleDiagnostics_dmg" == "3" ]]; then
 			mv /tmp/"${!installer_name}"/AppleDiagnostics.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
-			echo -e $(date "+%b %m %H:%M:%S") "AppleDiagnostics_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "AppleDiagnostics_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$BaseSystem_chunklist" == "3" ]]; then
 			mv /tmp/"${!installer_name}"/BaseSystem.chunklist "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
-			echo -e $(date "+%b %m %H:%M:%S") "BaseSystem_chunklist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "BaseSystem_chunklist=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$BaseSystem_dmg" == "3" ]]; then
 			mv /tmp/"${!installer_name}"/BaseSystem.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
-			echo -e $(date "+%b %m %H:%M:%S") "BaseSystem_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "BaseSystem_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$InstallESD_dmg" == "3" ]]; then
 			mv /tmp/"${!installer_name}"/InstallESD.dmg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
-			echo -e $(date "+%b %m %H:%M:%S") "InstallESD_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "InstallESD_dmg=\"3\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Prepared installer."${erase_style}
 }
@@ -449,14 +449,14 @@ Download_Installer_2()
 			mkdir /tmp/"${!installer_name}"
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 	
 		if [[ ! "$Install_dmg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${!installer_name}"/"${!installer_name}".dmg ${!installer_url}
-			echo -e $(date "+%b %m %H:%M:%S") "Install_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "Install_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Downloaded installer files."${erase_style}
 }
@@ -465,7 +465,7 @@ Prepare_Installer_2()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Preparing installer."${erase_style}
 
-		echo -e $(date "+%b %m %H:%M:%S") "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		Output_Off hdiutil attach /tmp/"${!installer_name}"/"${!installer_name}".dmg -mountpoint /tmp/"${!installer_name}"_dmg -nobrowse
 
 		installer_pkg="$(ls /tmp/"${!installer_name}"_dmg)"
@@ -473,21 +473,21 @@ Prepare_Installer_2()
 
 		if [[ ! "$Install_pkg" == "1" ]]; then
 			pkgutil --expand /tmp/"${!installer_name}"_dmg/"${installer_pkg}" /tmp/"${!installer_name}"/"${installer_pkg_partial}"
-			echo -e $(date "+%b %m %H:%M:%S") "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$Install_pkg" == "2" ]]; then
 			tar -xf /tmp/"${!installer_name}"/"${installer_pkg_partial}"/"${installer_pkg}"/Payload -C "$save_folder"
-			echo -e $(date "+%b %m %H:%M:%S") "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$InstallESD_dmg" == "1" ]]; then
 			cp /tmp/"${!installer_name}"_dmg/"${installer_pkg}" "$save_folder"/"${!installer_name}".app/Contents/SharedSupport/InstallESD.dmg
-			echo -e $(date "+%b %m %H:%M:%S") "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		Output_Off hdiutil detach /tmp/"${!installer_name}"_dmg
-		echo -e $(date "+%b %m %H:%M:%S") "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		echo -e "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Prepared installer."${erase_style}
 }
@@ -500,49 +500,49 @@ Download_Update()
 			mkdir /tmp/"${update_name}${update_version}"
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "update_download=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		echo -e "update_download=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 
 		if [[ ! "$macOSBrain_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${update_url}/macOSBrain.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "macOSBrain_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "macOSBrain_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$FirmwareUpdate_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FirmwareUpdate.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "FirmwareUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "FirmwareUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$FullBundleUpdate_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FullBundleUpdate.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "FullBundleUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "FullBundleUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$EmbeddedOSFirmware_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${update_url}/EmbeddedOSFirmware.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "EmbeddedOSFirmware_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "EmbeddedOSFirmware_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$SecureBoot_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${update_url}/SecureBoot.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "SecureBoot_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "SecureBoot_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$macOSUpd_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "macOSUpd_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "macOSUpd_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$macOSUpd_RecoveryHDUpdate_pkg" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.RecoveryHDUpdate.pkg
-			echo -e $(date "+%b %m %H:%M:%S") "macOSUpd_RecoveryHDUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "macOSUpd_RecoveryHDUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$Distribution_dist" == "1" ]]; then
 			Curl -L -s -o /tmp/"${update_name}${update_version}"/${update_key}.dist https://swdist.apple.com/content/downloads/${update_url}/${update_key}.English.dist
-			echo -e $(date "+%b %m %H:%M:%S") "Distribution_dist=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "Distribution_dist=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "update_download=\"2\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		echo -e "update_download=\"2\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Downloaded update files."${erase_style}
 }
@@ -551,16 +551,16 @@ Prepare_Update()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Preparing update."${erase_style}
 
-		echo -e $(date "+%b %m %H:%M:%S") "update_prepare=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		echo -e "update_prepare=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 
 		sed -i '' 's|<pkg-ref id="com\.apple\.pkg\.update\.os\.10\.14\.[0-9]\{1,\}Patch\.[a-zA-Z0-9]\{1,\}" auth="Root" packageIdentifier="com\.apple\.pkg\.update\.os\.10\.14\.[0-9]\{1,\}\.[a-zA-Z0-9]\{1,\}" onConclusion="RequireRestart">macOSUpd10\.14\.[0-9]\{1,\}Patch\.pkg<\/pkg-ref>||' /tmp/"${update_name}${update_version}"/${update_key}.dist
 
 		if [[ ! "$productbuild" == "1" ]]; then
 			Output_Off productbuild --distribution /tmp/"${update_name}${update_version}"/${update_key}.dist --package-path /tmp/"${update_name}${update_version}" "$save_folder/${update_name}${update_version}.pkg"
-			echo -e $(date "+%b %m %H:%M:%S") "productbuild=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+			echo -e "productbuild=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
-		echo -e $(date "+%b %m %H:%M:%S") "update_prepare=\"2\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
+		echo -e "update_prepare=\"2\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Prepared update."${erase_style}
 }

@@ -36,8 +36,6 @@ Path_Variables()
 {
 	script_path="${0}"
 	directory_path="${0%/*}"
-
-	resources_path="$directory_path/resources"
 }
 
 Input_Off()
@@ -93,25 +91,6 @@ Check_Root()
 			echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Root permissions check failed."${erase_style}
 		fi
 
-	fi
-}
-
-Check_Resources()
-{
-	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for resources."${erase_style}
-
-	if [[ -d "$resources_path" ]]; then
-		resources_check="passed"
-		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Resources check passed."${erase_style}
-	fi
-
-	if [[ ! -d "$resources_path" ]]; then
-		resources_check="failed"
-		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Resources check failed."${erase_style}
-		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool with the required resources."${erase_style}
-
-		Input_On
-		exit
 	fi
 }
 
@@ -183,6 +162,35 @@ Check_Internet()
 		exit
 	fi
 }
+
+Download_Internet()
+{
+	Curl -L -s -o /tmp/macos-downloader.zip https://github.com/rmc-team/macos-downloader/archive/master.zip
+	unzip -q /tmp/macos-downloader.zip -d /tmp
+
+	resources_path="/tmp/macos-downloader-master"
+	pbzx_resources_path="/tmp/macos-downloader-master/resources"
+}
+
+Check_Resources()
+{
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for resources."${erase_style}
+
+	if [[ -d "$resources_path" ]]; then
+		resources_check="passed"
+		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Resources check passed."${erase_style}
+	fi
+
+	if [[ ! -d "$resources_path" ]]; then
+		resources_check="failed"
+		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Resources check failed."${erase_style}
+		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool with the required resources."${erase_style}
+
+		Input_On
+		exit
+	fi
+}
+
 
 Input_Folder()
 {
@@ -269,10 +277,8 @@ Input_Version()
 
 Import_Catalog()
 {
-	Curl -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
-
-	chmod +x /tmp/Catalog.sh
-	source /tmp/Catalog.sh
+	chmod +x "$resources_path"/Catalog.sh
+	source "$resources_path"/Catalog.sh
 
 	update_option="${installer_choice}_update_option"
 	combo_update_option="${installer_choice}_combo_update_option"
@@ -400,8 +406,8 @@ Prepare_Installer()
 		cd /tmp/"${!installer_name}"
 	
 		if [[ ! "$InstallAssistantAuto_pkg" == "2" ]]; then
-			chmod +x "$resources_path"/pbzx
-			"$resources_path"/pbzx /tmp/"${!installer_name}"/InstallAssistantAuto.pkg | Output_Off cpio -i
+			chmod +x "$pbzx_resources_path"/pbzx
+			"$pbzx_resources_path"/pbzx /tmp/"${!installer_name}"/InstallAssistantAuto.pkg | Output_Off cpio -i
 			echo -e "InstallAssistantAuto_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -569,7 +575,7 @@ End()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Removing temporary files."${erase_style}
 
-		Output_Off rm /tmp/Catalog.sh
+		Output_Off rm -R "$resources_path"
 
 		if [[ "$installer_prepare" == "2" ]]; then
 			Output_Off rm -R /tmp/"${!installer_name}"
@@ -593,8 +599,9 @@ Parameter_Variables
 Path_Variables
 Check_Environment
 Check_Root
-Check_Resources
 Check_Internet
+Download_Internet
+Check_Resources
 Check_Volume_Version
 Check_Volume_Support
 Input_Folder

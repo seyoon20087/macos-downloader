@@ -45,9 +45,9 @@ c_installer_key="061-44387"
 c_installer_name="Install macOS Catalina"
 c_installer_version="10.15.3"
 
-c_update_url="23/61/061-81246-A_9HBT7AVVI2/ody3mcu71w2p93ujoxn3j0g7u52h2oea66"
-c_update_key="061-81246"
+c_update_url="39/45/061-85693-A_KD4QVVQ0QX/lbh9af74zv8i5s9kr3y5wisigvuo2yg6cm"
+c_update_key="061-85693"
 c_update_version="10.15.4"
 
-c_combo_update_url="51/43/061-81247-A_OD2QT36VJI/u6jlx98sfo4hx9chqxhmc5u64gavya2x88"
-c_combo_update_key="061-81247"
+c_combo_update_url="05/01/061-85695-A_BNQGK9FC1Y/l97oyrgtwh8s8z8hosjk5qll11ewt70wwb"
+c_combo_update_key="061-85695"

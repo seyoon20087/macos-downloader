@@ -37,8 +37,8 @@ m_combo_update_url="null"
 m_combo_update_key="null"
 
 
-c_update_option="0"
-c_combo_update_option="0"
+c_update_option="1"
+c_combo_update_option="1"
 
 c_installer_url="41/23/061-26578-A_FF0C6M87LS/ylvl0phx6uy3i444qt9p57n8wz0xnylmd9"
 c_installer_key="061-26578"

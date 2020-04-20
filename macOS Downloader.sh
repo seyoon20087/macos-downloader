@@ -123,33 +123,6 @@ Check_Volume_Support()
 		Input_On
 		exit
 	fi
-
-	if [[ $volume_version_short == "10.7" ]]; then
-		Check_Curl
-	fi
-}
-
-Check_Curl()
-{
-	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for curl version."${erase_style}
-
-	if [[ ! -f /opt/local/bin/curl || ! -f /opt/local/bin/curl ]]; then
-		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Curl version check failed."${erase_style}
-		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ This version of OS X requires Xcode Command Line Tools, MacPorts, and curl updates to be manually installed. Consult the macOS Downloader GitHub page for more information."${erase_style}
-
-		Input_On
-		exit
-	fi
-
-}
-
-Curl()
-{
-	if [[ $volume_version_short == "10.7" ]]; then
-		/opt/local/bin/curl "$@"
-	else
-		curl "$@"
-	fi
 }
 
 Check_Internet()
@@ -167,9 +140,15 @@ Check_Internet()
 	fi
 }
 
+Download_Curl()
+{
+	curl -k -L -s -o /tmp/curl https://siliconexar.ch/mac/bin/curl
+	chmod +x /tmp/curl
+}
+
 Download_Internet()
 {
-	Curl -L -s -o /tmp/macos-downloader.zip https://github.com/rmc-team/macos-downloader/archive/master.zip
+	/tmp/curl -k -L -s -o /tmp/macos-downloader.zip https://github.com/rmc-team/macos-downloader/archive/master.zip
 	unzip -q /tmp/macos-downloader.zip -d /tmp
 
 	resources_path="/tmp/macos-downloader-master"
@@ -367,32 +346,32 @@ Download_Installer()
 		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 	
 		if [[ ! "$InstallAssistantAuto_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${!installer_name}"/InstallAssistantAuto.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallAssistantAuto.pkg
+			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/InstallAssistantAuto.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallAssistantAuto.pkg
 			echo -e "InstallAssistantAuto_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$AppleDiagnostics_chunklist" == "1" ]]; then
-			Curl -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.chunklist
+			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.chunklist
 			echo -e "AppleDiagnostics_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$AppleDiagnostics_dmg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.dmg
+			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.dmg
 			echo -e "AppleDiagnostics_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$BaseSystem_chunklist" == "1" ]]; then
-			Curl -L -s -o /tmp/"${!installer_name}"/BaseSystem.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.chunklist
+			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/BaseSystem.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.chunklist
 			echo -e "BaseSystem_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$BaseSystem_dmg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${!installer_name}"/BaseSystem.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.dmg
+			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/BaseSystem.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.dmg
 			echo -e "BaseSystem_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$InstallESD_dmg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${!installer_name}"/InstallESD.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
+			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/InstallESD.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
 			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -462,7 +441,7 @@ Download_Installer_2()
 		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 	
 		if [[ ! "$Install_dmg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${!installer_name}"/"${!installer_name}".dmg ${!installer_url}
+			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/"${!installer_name}".dmg ${!installer_url}
 			echo -e "Install_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -513,42 +492,42 @@ Download_Update()
 		echo -e "update_download=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 
 		if [[ ! "$macOSBrain_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${update_url}/macOSBrain.pkg
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${update_url}/macOSBrain.pkg
 			echo -e "macOSBrain_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$FirmwareUpdate_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FirmwareUpdate.pkg
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FirmwareUpdate.pkg
 			echo -e "FirmwareUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$FullBundleUpdate_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FullBundleUpdate.pkg
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FullBundleUpdate.pkg
 			echo -e "FullBundleUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$EmbeddedOSFirmware_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${update_url}/EmbeddedOSFirmware.pkg
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${update_url}/EmbeddedOSFirmware.pkg
 			echo -e "EmbeddedOSFirmware_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$SecureBoot_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${update_url}/SecureBoot.pkg
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${update_url}/SecureBoot.pkg
 			echo -e "SecureBoot_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$macOSUpd_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.pkg
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.pkg
 			echo -e "macOSUpd_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$macOSUpd_RecoveryHDUpdate_pkg" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.RecoveryHDUpdate.pkg
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.RecoveryHDUpdate.pkg
 			echo -e "macOSUpd_RecoveryHDUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$Distribution_dist" == "1" ]]; then
-			Curl -L -s -o /tmp/"${update_name}${update_version}"/${update_key}.dist https://swdist.apple.com/content/downloads/${update_url}/${update_key}.English.dist
+			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/${update_key}.dist https://swdist.apple.com/content/downloads/${update_url}/${update_key}.English.dist
 			echo -e "Distribution_dist=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
@@ -604,6 +583,7 @@ Path_Variables
 Check_Environment
 Check_Root
 Check_Internet
+Download_Curl
 Download_Internet
 Check_Resources
 Check_Volume_Version

@@ -4,7 +4,8 @@
 macOS Downloader is a command line tool for downloading macOS installers and beta updates
 
 # Credits
-- [pbzx](https://github.com/rmc-team/macos-downloader/blob/master/resources/pbzx) by [Niklas Rosenstein](https://github.com/NiklasRosenstein/pbzx)
+- [pbzx](https://github.com/NiklasRosenstein/pbzx) compiled by [dosdude1](https://github.com/dosdude1)
+- [curl](https://curl.haxx.se/) compiled by [SiliconExarch](https://github.com/SiliconExarch)
 
 # Links
 - [RMC GitHub](https://github.com/rmc-team)

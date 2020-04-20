@@ -36,6 +36,8 @@ Path_Variables()
 {
 	script_path="${0}"
 	directory_path="${0%/*}"
+
+	resources_path="$directory_path/resources"
 }
 
 Input_Off()
@@ -125,36 +127,6 @@ Check_Volume_Support()
 	fi
 }
 
-Check_Internet()
-{
-	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for internet conectivity."${erase_style}
-
-	if [[ $(ping -c 2 www.google.com) == *transmitted* && $(ping -c 2 www.google.com) == *received* ]]; then
-		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Integrity conectivity check passed."${erase_style}
-	else
-		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Integrity conectivity check failed."${erase_style}
-		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool while connected to the internet."${erase_style}
-
-		Input_On
-		exit
-	fi
-}
-
-Download_Curl()
-{
-	curl -k -L -s -o /tmp/curl https://siliconexar.ch/mac/bin/curl
-	chmod +x /tmp/curl
-}
-
-Download_Internet()
-{
-	/tmp/curl -k -L -s -o /tmp/macos-downloader.zip https://github.com/rmc-team/macos-downloader/archive/master.zip
-	unzip -q /tmp/macos-downloader.zip -d /tmp
-
-	resources_path="/tmp/macos-downloader-master"
-	pbzx_resources_path="/tmp/macos-downloader-master/resources"
-}
-
 Check_Resources()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for resources."${erase_style}
@@ -174,6 +146,20 @@ Check_Resources()
 	fi
 }
 
+Check_Internet()
+{
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for internet conectivity."${erase_style}
+
+	if [[ $(ping -c 2 www.google.com) == *transmitted* && $(ping -c 2 www.google.com) == *received* ]]; then
+		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Integrity conectivity check passed."${erase_style}
+	else
+		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Integrity conectivity check failed."${erase_style}
+		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool while connected to the internet."${erase_style}
+
+		Input_On
+		exit
+	fi
+}
 
 Input_Folder()
 {
@@ -260,8 +246,11 @@ Input_Version()
 
 Import_Catalog()
 {
-	chmod +x "$resources_path"/Catalog.sh
-	source "$resources_path"/Catalog.sh
+	chmod +x "$resources_path"/curl
+	"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
+
+	chmod +x /tmp/Catalog.sh
+	source /tmp/Catalog.sh
 
 	update_option="${installer_choice}_update_option"
 	combo_update_option="${installer_choice}_combo_update_option"
@@ -346,32 +335,32 @@ Download_Installer()
 		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 	
 		if [[ ! "$InstallAssistantAuto_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/InstallAssistantAuto.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallAssistantAuto.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/InstallAssistantAuto.pkg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallAssistantAuto.pkg
 			echo -e "InstallAssistantAuto_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$AppleDiagnostics_chunklist" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.chunklist
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.chunklist
 			echo -e "AppleDiagnostics_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$AppleDiagnostics_dmg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.dmg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/AppleDiagnostics.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/AppleDiagnostics.dmg
 			echo -e "AppleDiagnostics_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$BaseSystem_chunklist" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/BaseSystem.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.chunklist
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/BaseSystem.chunklist http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.chunklist
 			echo -e "BaseSystem_chunklist=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$BaseSystem_dmg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/BaseSystem.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.dmg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/BaseSystem.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/BaseSystem.dmg
 			echo -e "BaseSystem_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 	
 		if [[ ! "$InstallESD_dmg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/InstallESD.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/InstallESD.dmg http://swcdn.apple.com/content/downloads/${!installer_url}/InstallESDDmg.pkg
 			echo -e "InstallESD_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -389,8 +378,8 @@ Prepare_Installer()
 		cd /tmp/"${!installer_name}"
 	
 		if [[ ! "$InstallAssistantAuto_pkg" == "2" ]]; then
-			chmod +x "$pbzx_resources_path"/pbzx
-			"$pbzx_resources_path"/pbzx /tmp/"${!installer_name}"/InstallAssistantAuto.pkg | Output_Off cpio -i
+			chmod +x "$resources_path"/pbzx
+			"$resources_path"/pbzx /tmp/"${!installer_name}"/InstallAssistantAuto.pkg | Output_Off cpio -i
 			echo -e "InstallAssistantAuto_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -441,7 +430,7 @@ Download_Installer_2()
 		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 	
 		if [[ ! "$Install_dmg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${!installer_name}"/"${!installer_name}".dmg ${!installer_url}
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/"${!installer_name}".dmg ${!installer_url}
 			echo -e "Install_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -492,42 +481,42 @@ Download_Update()
 		echo -e "update_download=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 
 		if [[ ! "$macOSBrain_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${update_url}/macOSBrain.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/macOSBrain.pkg http://swcdn.apple.com/content/downloads/${update_url}/macOSBrain.pkg
 			echo -e "macOSBrain_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$FirmwareUpdate_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FirmwareUpdate.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/FirmwareUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FirmwareUpdate.pkg
 			echo -e "FirmwareUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$FullBundleUpdate_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FullBundleUpdate.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/FullBundleUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/FullBundleUpdate.pkg
 			echo -e "FullBundleUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$EmbeddedOSFirmware_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${update_url}/EmbeddedOSFirmware.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/EmbeddedOSFirmware.pkg http://swcdn.apple.com/content/downloads/${update_url}/EmbeddedOSFirmware.pkg
 			echo -e "EmbeddedOSFirmware_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$SecureBoot_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${update_url}/SecureBoot.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/SecureBoot.pkg http://swcdn.apple.com/content/downloads/${update_url}/SecureBoot.pkg
 			echo -e "SecureBoot_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$macOSUpd_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.pkg
 			echo -e "macOSUpd_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$macOSUpd_RecoveryHDUpdate_pkg" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.RecoveryHDUpdate.pkg
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/${update_name}${update_version}.RecoveryHDUpdate.pkg http://swcdn.apple.com/content/downloads/${update_url}/${update_name}${update_version}.RecoveryHDUpdate.pkg
 			echo -e "macOSUpd_RecoveryHDUpdate_pkg=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
 		if [[ ! "$Distribution_dist" == "1" ]]; then
-			/tmp/curl -k -L -s -o /tmp/"${update_name}${update_version}"/${update_key}.dist https://swdist.apple.com/content/downloads/${update_url}/${update_key}.English.dist
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${update_name}${update_version}"/${update_key}.dist https://swdist.apple.com/content/downloads/${update_url}/${update_key}.English.dist
 			echo -e "Distribution_dist=\"1\"" >> /tmp/"${update_name}${update_version}"/Catalog.sh
 		fi
 
@@ -558,8 +547,6 @@ End()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Removing temporary files."${erase_style}
 
-		Output_Off rm -R "$resources_path"
-
 		if [[ "$installer_prepare" == "2" ]]; then
 			Output_Off rm -R /tmp/"${!installer_name}"
 		fi
@@ -582,9 +569,8 @@ Parameter_Variables
 Path_Variables
 Check_Environment
 Check_Root
+Check_Resources
 Check_Internet
-Download_Curl
-Download_Internet
 Check_Resources
 Check_Volume_Version
 Check_Volume_Support

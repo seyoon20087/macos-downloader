@@ -13,5 +13,5 @@ macOS Downloader is a command line tool for downloading macOS installers and bet
 - ~~More Documentation~~ Coming Soon
 
 # Usage
-chmod +x ./macos-downloader-release.sh —> makes the script runnable  
-sudo ./macos-downloader-release.sh —> runs the script with root permissions  
+chmod +x ./macOS\ Downloader.sh —> makes the script runnable  
+sudo ./macOS\ Downloader.sh —> runs the script with root permissions  

@@ -22,7 +22,7 @@ If applicable, add screenshots and/or logs to help explain your problem.
 
 **Mac (please complete the following information):**
  - OS: [ex. macOS 10.14]
- - Version [ex. 1.0]
+ - Version [ex. 2.0]
 
 **Additional context**
 Add any other context about the problem here.

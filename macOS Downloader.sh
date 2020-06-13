@@ -90,7 +90,7 @@ Check_Root()
 
 		if [[ ! $(whoami) == "root" && $environment == "system" ]]; then
 			root_check="failed"
-			echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Root permissions check failed."${erase_style}
+			echo -e $(date "+%b %m %H:%M:%S") ${text_warning}"- Root permissions check failed."${erase_style}
 		fi
 
 	fi
@@ -247,10 +247,16 @@ Input_Version()
 Import_Catalog()
 {
 	chmod +x "$resources_path"/curl
-	"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
-
-	chmod +x /tmp/Catalog.sh
-	source /tmp/Catalog.sh
+	
+	if [[ -f "$directory_path"/Catalog.sh ]]; then
+		chmod +x "$directory_path"/Catalog.sh
+		source "$directory_path"/Catalog.sh
+	else
+		"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
+	
+		chmod +x /tmp/Catalog.sh
+		source /tmp/Catalog.sh
+	fi
 
 	update_option="${installer_choice}_update_option"
 	combo_update_option="${installer_choice}_combo_update_option"
@@ -571,7 +577,6 @@ Check_Environment
 Check_Root
 Check_Resources
 Check_Internet
-Check_Resources
 Check_Volume_Version
 Check_Volume_Support
 Input_Folder

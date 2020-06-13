@@ -3,7 +3,8 @@
 # macOS Downloader
 macOS Downloader is a command line tool for downloading macOS installers and beta updates
 
-# Credits
+# Contributors
+I'd like to the thank the following people, and many others, for their research, help, and inspiration.
 - [pbzx](https://github.com/NiklasRosenstein/pbzx) compiled by [dosdude1](https://github.com/dosdude1)
 - [curl](https://curl.haxx.se/) compiled by [SiliconExarch](https://github.com/SiliconExarch)
 
@@ -11,7 +12,6 @@ macOS Downloader is a command line tool for downloading macOS installers and bet
 - [RMC GitHub](https://github.com/rmc-team)
 - [RMC Website](https://www.rmc-team.ch)
 - [RMC Twitter](https://twitter.com/_rmcteam)
-- ~~More Documentation~~ Coming Soon
 
 # Usage
 chmod +x ./macOS\ Downloader.sh —> makes the script runnable  

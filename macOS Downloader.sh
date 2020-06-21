@@ -32,10 +32,15 @@ Parameter_Variables()
 	fi
 }
 
+Real_Path()
+{
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#.}"
+}
+
 Path_Variables()
 {
 	script_path="${0}"
-	directory_path="${0%/*}"
+	directory_path="$(Real_Path "${0%/*}")"
 
 	resources_path="$directory_path/resources"
 }

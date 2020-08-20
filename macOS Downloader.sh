@@ -197,50 +197,64 @@ Input_Version()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ What operation would you like to run?"${erase_style}
 	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Input an operation number."${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     1 - Catalina"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     2 - Mojave"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     3 - High Sierra"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     4 - Sierra"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     5 - El Capitan"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     6 - Yosemite"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     1 - Big Sur"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     2 - Catalina"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     3 - Mojave"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     4 - High Sierra"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     5 - Sierra"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     6 - El Capitan"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     7 - Yosemite"${erase_style}
 
 
 	Input_On
 	read -e -p "$(date "+%b %m %H:%M:%S") / " operation_version
 	Input_Off
 
+	
 	if [[ $operation_version == "1" ]]; then
-		installer_choice="c"
+		installer_choice="bs"
 	fi
 
 	if [[ $operation_version == "2" ]]; then
-		installer_choice="m"
+		installer_choice="c"
 	fi
 
 	if [[ $operation_version == "3" ]]; then
-		installer_choice="hs"
+		installer_choice="m"
 	fi
 
 	if [[ $operation_version == "4" ]]; then
-		installer_choice="s"
+		installer_choice="hs"
 	fi
 
 	if [[ $operation_version == "5" ]]; then
-		installer_choice="ec"
+		installer_choice="s"
 	fi
 
 	if [[ $operation_version == "6" ]]; then
+		installer_choice="ec"
+	fi
+
+	if [[ $operation_version == "7" ]]; then
 		installer_choice="y"
 	fi
 
-	if [[ $operation_version == [1-3] ]]; then
+	if [[ $operation_version == "1" ]]; then
+		Import_Catalog
+		Import_Second_Catalog
+		Download_Installer_3
+		Prepare_Installer_3
+		Import_Second_Catalog
+	fi
+
+	if [[ $operation_version == [2-4] ]]; then
 		Import_Catalog
 		Import_Second_Catalog
 		Input_Download
 		Import_Second_Catalog
 	fi
 
-	if [[ $operation_version == [4-6] ]]; then
+	if [[ $operation_version == [5-7] ]]; then
 		Import_Catalog
 		Import_Second_Catalog
 		Download_Installer_2
@@ -476,6 +490,54 @@ Prepare_Installer_2()
 		fi
 
 		Output_Off hdiutil detach /tmp/"${!installer_name}"_dmg
+		echo -e "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Prepared installer."${erase_style}
+}
+
+Download_Installer_3()
+{
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Downloading installer files."${erase_style}
+
+		if [[ ! -d /tmp/"${!installer_name}" ]]; then
+			mkdir /tmp/"${!installer_name}"
+		fi
+
+		echo -e "installer_download=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+	
+		if [[ ! "$Install_pkg" == "1" ]]; then
+			"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/"${!installer_name}"/"${!installer_name}".pkg ${!installer_url}
+			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		echo -e "installer_download=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+
+	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Downloaded installer files."${erase_style}
+}
+
+Prepare_Installer_3()
+{
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Preparing installer."${erase_style}
+
+		echo -e "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		if [[ ! "$Install_pkg" == "1" ]]; then
+			Output_Off pkgutil --expand /tmp/"${!installer_name}"/"${!installer_name}".pkg /tmp/"${!installer_name}"/"${!installer_name}"
+			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$Install_pkg" == "2" ]]; then
+			tar -xf /tmp/"${!installer_name}"/"${!installer_name}"/Payload -C "$save_folder"
+			mv "$save_folder"/Applications/"${!installer_name}".app "$save_folder"
+			rm -R "$save_folder"/Applications
+			echo -e "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
+		if [[ ! "$SharedSupport_dmg" == "1" ]]; then
+			mkdir -p "$save_folder"/"${!installer_name}".app/Contents/SharedSupport
+			cp /tmp/"${!installer_name}"/"${!installer_name}".pkg "$save_folder"/"${!installer_name}".app/Contents/SharedSupport/SharedSupport.dmg
+			echo -e "SharedSupport_dmg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
+		fi
+
 		echo -e "installer_prepare=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Prepared installer."${erase_style}

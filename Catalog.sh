@@ -40,10 +40,10 @@ m_combo_update_key="null"
 c_update_option="0"
 c_combo_update_option="0"
 
-c_installer_url="10/06/001-36801-A_9MBEQ97Z9M/672a1q4u8978ize3s15ygivp2dqwmk10qb"
-c_installer_key="001-36801"
+c_installer_url="20/55/001-51042-A_2EJTJOSUC2/rsvf13iphg5lvcqcysqcarv8cvddq8igek"
+c_installer_key="001-51042"
 c_installer_name="Install macOS Catalina"
-c_installer_version="10.15.6"
+c_installer_version="10.15.7"
 
 c_update_url="null"
 c_update_key="null"

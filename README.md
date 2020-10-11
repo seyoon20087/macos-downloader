@@ -1,5 +1,3 @@
-<img src="https://github.com/rmc-team/macos-downloader/raw/master/Installer.png" width="256">
-
 # macOS Downloader
 macOS Downloader is a command line tool for downloading macOS installers and beta updates
 

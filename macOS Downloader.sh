@@ -70,35 +70,11 @@ Check_Environment()
 
 		if [ -d /Install\ *.app ]; then
 			environment="installer"
-		fi
-
-		if [ ! -d /Install\ *.app ]; then
+		else
 			environment="system"
 		fi
 
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Checked system environment."${erase_style}
-}
-
-Check_Root()
-{
-	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for root permissions."${erase_style}
-
-	if [[ $environment == "installer" ]]; then
-		root_check="passed"
-		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
-	else
-
-		if [[ $(whoami) == "root" && $environment == "system" ]]; then
-			root_check="passed"
-			echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Root permissions check passed."${erase_style}
-		fi
-
-		if [[ ! $(whoami) == "root" && $environment == "system" ]]; then
-			root_check="failed"
-			echo -e $(date "+%b %m %H:%M:%S") ${text_warning}"- Root permissions check failed."${erase_style}
-		fi
-
-	fi
 }
 
 Check_Volume_Version()
@@ -121,7 +97,7 @@ Check_Volume_Support()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking system support."${erase_style}
 
-	if [[ $volume_version_short == "10."[7-9] || $volume_version_short == "10.1"[0-5] ]]; then
+	if [[ $volume_version_short == "10."[7-9] || $volume_version_short == "10.1"[0-5] || $volume_version_short == "11.0" ]]; then
 		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ System support check passed."${erase_style}
 	else
 		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- System support check failed."${erase_style}
@@ -139,9 +115,7 @@ Check_Resources()
 	if [[ -d "$resources_path" ]]; then
 		resources_check="passed"
 		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Resources check passed."${erase_style}
-	fi
-
-	if [[ ! -d "$resources_path" ]]; then
+	else
 		resources_check="failed"
 		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Resources check failed."${erase_style}
 		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool with the required resources."${erase_style}
@@ -155,7 +129,7 @@ Check_Internet()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for internet conectivity."${erase_style}
 
-	if [[ $(ping -c 2 www.google.com) == *transmitted* && $(ping -c 2 www.google.com) == *received* ]]; then
+	if [[ $(ping -c 2 www.github.com) == *transmitted* && $(ping -c 2 www.github.com) == *received* ]]; then
 		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Integrity conectivity check passed."${erase_style}
 	else
 		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Integrity conectivity check failed."${erase_style}
@@ -267,15 +241,10 @@ Import_Catalog()
 {
 	chmod +x "$resources_path"/curl
 	
-	if [[ -f "$directory_path"/Catalog.sh ]]; then
-		chmod +x "$directory_path"/Catalog.sh
-		source "$directory_path"/Catalog.sh
-	else
-		"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
+	"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
 	
-		chmod +x /tmp/Catalog.sh
-		source /tmp/Catalog.sh
-	fi
+	chmod +x /tmp/Catalog.sh
+	source /tmp/Catalog.sh
 
 	update_option="${installer_choice}_update_option"
 	combo_update_option="${installer_choice}_combo_update_option"
@@ -641,7 +610,6 @@ Escape_Variables
 Parameter_Variables
 Path_Variables
 Check_Environment
-Check_Root
 Check_Resources
 Check_Internet
 Check_Volume_Version

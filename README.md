@@ -9,4 +9,4 @@ Download the latest version of macOS Downloader from the GitHub releases page.
 
 ## Step 2
 
-Unzip the download and open Terminal. Type chmod +x and drag the script file to Terminal, then hit enter. Then type sudo, drag the script file to Terminal, and hit enter.
+Unzip the download and open Terminal. Type chmod +x and drag the script file to Terminal, then hit enter. Then drag the script file to Terminal, and hit enter.

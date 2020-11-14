@@ -30,6 +30,10 @@ Parameter_Variables()
 		verbose="1"
 		set -x
 	fi
+
+	if [[ $parameters == *"-l"* || $parameters == *"-local"* ]]; then
+		local="1"
+	fi
 }
 
 Real_Path()
@@ -119,21 +123,6 @@ Check_Resources()
 		resources_check="failed"
 		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Resources check failed."${erase_style}
 		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool with the required resources."${erase_style}
-
-		Input_On
-		exit
-	fi
-}
-
-Check_Internet()
-{
-	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking for internet conectivity."${erase_style}
-
-	if [[ $(ping -c 2 www.github.com) == *transmitted* && $(ping -c 2 www.github.com) == *received* ]]; then
-		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Integrity conectivity check passed."${erase_style}
-	else
-		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Integrity conectivity check failed."${erase_style}
-		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool while connected to the internet."${erase_style}
 
 		Input_On
 		exit
@@ -239,12 +228,31 @@ Input_Version()
 
 Import_Catalog()
 {
+	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Importing catalog"${erase_style}
+
 	chmod +x "$resources_path"/curl
 	
-	"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
+	if [[ -f "$directory_path"/Catalog.sh && $local == "1" ]]; then		
+		chmod +x "$directory_path"/Catalog.sh
+		source "$directory_path"/Catalog.sh
+
+		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Catalog imported."${erase_style}
+	else
+		"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/rmc-team/macos-downloader/raw/master/Catalog.sh
 	
-	chmod +x /tmp/Catalog.sh
-	source /tmp/Catalog.sh
+		if [[ -f /tmp/Catalog.sh ]]; then
+			chmod +x /tmp/Catalog.sh
+			source /tmp/Catalog.sh
+
+			echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Catalog imported."${erase_style}
+		else
+			echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- Catalog import failed."${erase_style}
+			echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool while connected to the internet."${erase_style}
+
+			Input_On
+			exit
+		fi
+	fi
 
 	update_option="${installer_choice}_update_option"
 	combo_update_option="${installer_choice}_combo_update_option"
@@ -444,12 +452,12 @@ Prepare_Installer_2()
 		installer_pkg_partial="${installer_pkg%.*}"
 
 		if [[ ! "$Install_pkg" == "1" ]]; then
-			pkgutil --expand /tmp/"${!installer_name}"_dmg/"${installer_pkg}" /tmp/"${!installer_name}"/"${installer_pkg_partial}"
+			tar -xf /tmp/"${!installer_name}"_dmg/"${installer_pkg}" -C /tmp/"${!installer_name}" "${installer_pkg}"/Payload
 			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$Install_pkg" == "2" ]]; then
-			tar -xf /tmp/"${!installer_name}"/"${installer_pkg_partial}"/"${installer_pkg}"/Payload -C "$save_folder"
+			tar -xf /tmp/"${!installer_name}"/"${installer_pkg}"/Payload -C "$save_folder"
 			echo -e "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -490,14 +498,13 @@ Prepare_Installer_3()
 
 		echo -e "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		if [[ ! "$Install_pkg" == "1" ]]; then
-			Output_Off pkgutil --expand /tmp/"${!installer_name}"/"${!installer_name}".pkg /tmp/"${!installer_name}"/"${!installer_name}"
+			tar -xf /tmp/"${!installer_name}"/"${!installer_name}".pkg -C /tmp/"${!installer_name}" Payload
 			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$Install_pkg" == "2" ]]; then
-			tar -xf /tmp/"${!installer_name}"/"${!installer_name}"/Payload -C "$save_folder"
-			mv "$save_folder"/Applications/"${!installer_name}".app "$save_folder"
-			rm -R "$save_folder"/Applications
+			tar -xf /tmp/"${!installer_name}"/Payload -C /tmp/"${!installer_name}" Applications/"${!installer_name}".app
+			mv /tmp/"${!installer_name}"/Applications/"${!installer_name}".app "$save_folder"
 			echo -e "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -611,7 +618,6 @@ Parameter_Variables
 Path_Variables
 Check_Environment
 Check_Resources
-Check_Internet
 Check_Volume_Version
 Check_Volume_Support
 Input_Folder

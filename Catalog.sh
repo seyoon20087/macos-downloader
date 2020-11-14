@@ -56,8 +56,8 @@ c_combo_update_key="null"
 bs_update_option="0"
 bs_combo_update_option="0"
 
-bs_installer_url="http://swcdn.apple.com/content/downloads/49/42/001-43966-A_UZVPNAGC5P/smuubcmj04qay4n78q85cpe85rcsdu00qy/InstallAssistant.pkg"
-bs_installer_name="Install macOS Big Sur Beta"
+bs_installer_url="http://swcdn.apple.com/content/downloads/50/49/001-79699-A_93OMDU5KFG/dkjnjkq9eax1n2wpf8rik5agns2z43ikqu/InstallAssistant.pkg"
+bs_installer_name="Install macOS Big Sur"
 bs_installer_version="11.0"
 
 bs_update_url="null"

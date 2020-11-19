@@ -452,12 +452,12 @@ Prepare_Installer_2()
 		installer_pkg_partial="${installer_pkg%.*}"
 
 		if [[ ! "$Install_pkg" == "1" ]]; then
-			tar -xf /tmp/"${!installer_name}"_dmg/"${installer_pkg}" -C /tmp/"${!installer_name}" "${installer_pkg}"/Payload
+			pkgutil --expand /tmp/"${!installer_name}"_dmg/"${installer_pkg}" /tmp/"${!installer_name}"/"${installer_pkg_partial}"
 			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$Install_pkg" == "2" ]]; then
-			tar -xf /tmp/"${!installer_name}"/"${installer_pkg}"/Payload -C "$save_folder"
+			tar -xf /tmp/"${!installer_name}"/"${installer_pkg_partial}"/"${installer_pkg}"/Payload -C "$save_folder"
 			echo -e "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
@@ -498,12 +498,12 @@ Prepare_Installer_3()
 
 		echo -e "installer_prepare=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		if [[ ! "$Install_pkg" == "1" ]]; then
-			tar -xf /tmp/"${!installer_name}"/"${!installer_name}".pkg -C /tmp/"${!installer_name}" Payload
+			Output_Off pkgutil --expand /tmp/"${!installer_name}"/"${!installer_name}".pkg /tmp/"${!installer_name}"/"${!installer_name}"
 			echo -e "Install_pkg=\"1\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi
 
 		if [[ ! "$Install_pkg" == "2" ]]; then
-			tar -xf /tmp/"${!installer_name}"/Payload -C /tmp/"${!installer_name}" Applications/"${!installer_name}".app
+			tar -xf /tmp/"${!installer_name}"/"${!installer_name}"/Payload -C /tmp/"${!installer_name}" Applications/"${!installer_name}".app
 			mv /tmp/"${!installer_name}"/Applications/"${!installer_name}".app "$save_folder"
 			echo -e "Install_pkg=\"2\"" >> /tmp/"${!installer_name}"/Catalog.sh
 		fi

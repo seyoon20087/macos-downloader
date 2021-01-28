@@ -94,6 +94,10 @@ Check_Volume_Version()
 			volume_version_short="$(defaults read /System/Library/CoreServices/SystemVersion.plist ProductVersion | cut -c-4)"
 		fi
 
+		if [[ ${#volume_version_short} == "4" ]]; then
+			volume_version_short="$(defaults read /System/Library/CoreServices/SystemVersion.plist ProductVersion | cut -c-2)"
+		fi
+
 	echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Checked system version."${erase_style}
 }
 
@@ -101,7 +105,7 @@ Check_Volume_Support()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking system support."${erase_style}
 
-	if [[ $volume_version_short == "10."[7-9] || $volume_version_short == "10.1"[0-5] || $volume_version_short == "11.0" || $volume_version_short == "11.1" ]]; then
+	if [[ $volume_version_short == "10."[7-9] || $volume_version_short == "10.1"[0-5] || $volume_version_short == "11" ]]; then
 		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ System support check passed."${erase_style}
 	else
 		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- System support check failed."${erase_style}

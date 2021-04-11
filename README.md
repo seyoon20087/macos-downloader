@@ -1,8 +1,8 @@
 # macOS Downloader
 macOS Downloader is a command line tool for downloading macOS installers and beta updates
 
-## End of Development
-This project has been archived and won't receive future updates or support. For more information please visit [this page](https://julian-fairfax.github.io/blog/020321/end-of-development).
+## End of Support/Development
+This project has had its issues and discussions disabled and *most likely* won't receive future updates or support. For more information please visit [this page](https://julian-fairfax.github.io/blog/020321/end-of-development).
 
 ## Usage
 

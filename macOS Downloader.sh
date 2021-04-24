@@ -242,7 +242,7 @@ Import_Catalog()
 
 		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Catalog imported."${erase_style}
 	else
-		"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/julian-fairfax/macos-downloader/raw/master/Catalog.sh
+		"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/julianfairfax/macos-downloader/raw/master/Catalog.sh
 	
 		if [[ -f /tmp/Catalog.sh ]]; then
 			chmod +x /tmp/Catalog.sh

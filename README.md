@@ -17,7 +17,7 @@ This is a fork, designed also for Mac OS X Snow Leopard, mentiong [this issue](h
 
 ## License
 
-Like the main provider from [rmc-team](https://github.com/rmc-team), this repository is licensed under the [GNU General Public License](LICENSE.txt)
+Like the main provider from [julianfairfax](https://github.com/julianfairfax), this repository is licensed under the [GNU General Public License](LICENSE.txt)
 
 ```
 Copyright (C) 2020-present github/seyoon20087

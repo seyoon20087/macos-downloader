@@ -2,6 +2,39 @@
 
 parameters="${1}${2}${3}${4}${5}${6}${7}${8}${9}"
 
+Show_License() {
+	# Copyright (C) 2020-present github/seyoon20087
+    #
+    # This program is free software: you can redistribute it and/or modify
+    # it under the terms of the GNU General Public License as published by
+    # the Free Software Foundation, either version 3 of the License, or
+    # (at your option) any later version.
+    #
+    # This program is distributed in the hope that it will be useful,
+    # but WITHOUT ANY WARRANTY; without even the implied warranty of
+    # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    # GNU General Public License for more details.
+    #
+    # You should have received a copy of the GNU General Public License
+    # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+	echo ""
+	echo 'Copyright (C) 2020-present github/seyoon20087
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.'
+	echo ""
+}
+
 Escape_Variables()
 {
 	text_progress="\033[38;5;113m"
@@ -105,7 +138,7 @@ Check_Volume_Support()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_progress}"> Checking system support."${erase_style}
 
-	if [[ $volume_version_short == "10."[7-9] || $volume_version_short == "10.1"[0-5] || $volume_version_short == "11" ]]; then
+	if [[ $volume_version_short == "10."[6-9] || $volume_version_short == "10.1"[0-5] || $volume_version_short == "11" ]]; then
 		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ System support check passed."${erase_style}
 	else
 		echo -e $(date "+%b %m %H:%M:%S") ${text_error}"- System support check failed."${erase_style}
@@ -242,7 +275,7 @@ Import_Catalog()
 
 		echo -e $(date "+%b %m %H:%M:%S") ${move_up}${erase_line}${text_success}"+ Catalog imported."${erase_style}
 	else
-		"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://github.com/julianfairfax/macos-downloader/raw/master/Catalog.sh
+		"$resources_path"/curl --cacert "$resources_path"/cacert.pem -L -s -o /tmp/Catalog.sh https://raw.githubusercontent.com/seyoon20087/macos-downloader/master/Catalog.sh
 	
 		if [[ -f /tmp/Catalog.sh ]]; then
 			chmod +x /tmp/Catalog.sh
@@ -616,6 +649,7 @@ End()
 	exit
 }
 
+Show_License
 Input_Off
 Escape_Variables
 Parameter_Variables

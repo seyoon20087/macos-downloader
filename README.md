@@ -13,7 +13,7 @@ macOS Downloader is a command line tool for downloading macOS installers and bet
 Unzip the download and open Terminal. Type chmod +x and drag the script file to Terminal, then hit return. Then drag the script file to Terminal, and hit return.
 
 ## Disclaimer
-This is a fork, designed also for Mac OS X Snow Leopard, mentiong [this issue](https://github.com/rmc-team/macos-downloader/issues/26). If this is not working please make a pull request on this fork and we'll fix it as soon as possible.
+This is a fork, designed also for Mac OS X Snow Leopard (but not tested). If this is not working please make a pull request on this fork and we'll fix it as soon as possible.
 
 ## License
 

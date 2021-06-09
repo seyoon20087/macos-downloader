@@ -71,13 +71,13 @@ m_update_option="0"
 m_combo_update_option="0"
 
 
-m_installer_url="https://swcdn.apple.com/content/downloads/38/12/071-51840-A_R2JDKNM0LX/wqollynqs6j5006166tvw4rliu9htf7swu/InstallAssistant.pkg"
-m_installer_name="Install macOS 12 Beta"
-m_installer_version="12.0"
+mn_installer_url="https://swcdn.apple.com/content/downloads/38/12/071-51840-A_R2JDKNM0LX/wqollynqs6j5006166tvw4rliu9htf7swu/InstallAssistant.pkg"
+mn_installer_name="Install macOS 12 Beta"
+mn_installer_version="12.0"
 
-m_update_url="null"
-m_update_key="null"
-m_update_version="null"
+mn_update_url="null"
+mn_update_key="null"
+mn_update_version="null"
 
-m_combo_update_url="null"
-m_combo_update_key="null"
+mn_combo_update_url="null"
+mn_combo_update_key="null"

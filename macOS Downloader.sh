@@ -195,7 +195,7 @@ Input_Version()
 
 
 	if [[ $operation_version == "1" ]]; then
-		installer_choice="m"
+		installer_choice="mn"
 	fi
 
 	if [[ $operation_version == "2" ]]; then

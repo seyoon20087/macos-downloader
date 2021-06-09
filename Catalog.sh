@@ -56,7 +56,7 @@ c_combo_update_key="null"
 bs_update_option="0"
 bs_combo_update_option="0"
 
-bs_installer_url="http://swcdn.apple.com/content/downloads/55/59/071-00696-A_4T69TQR1VO/9psvjmwyjlucyg708cqjeaiylrvb0xph94/InstallAssistant.pkg"
+bs_installer_url="https://swcdn.apple.com/content/downloads/55/59/071-00696-A_4T69TQR1VO/9psvjmwyjlucyg708cqjeaiylrvb0xph94/InstallAssistant.pkg"
 bs_installer_name="Install macOS Big Sur"
 bs_installer_version="11.4"
 
@@ -66,3 +66,17 @@ bs_update_version="null"
 
 bs_combo_update_url="null"
 bs_combo_update_key="null"
+
+m_update_option="0"
+m_combo_update_option="0"
+
+m_installer_url="https://swcdn.apple.com/content/downloads/38/12/071-51840-A_R2JDKNM0LX/wqollynqs6j5006166tvw4rliu9htf7swu/InstallAssistant.pkg"
+m_installer_name="Install macOS 12 Beta"
+m_installer_version="12.0"
+
+m_update_url="null"
+m_update_key="null"
+m_update_version="null"
+
+m_combo_update_url="null"
+m_combo_update_key="null"

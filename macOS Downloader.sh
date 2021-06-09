@@ -1,39 +1,21 @@
 #!/bin/bash
 
+# Copyright (C) 2020-present github/seyoon20087
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 parameters="${1}${2}${3}${4}${5}${6}${7}${8}${9}"
-
-Show_License() {
-	# Copyright (C) 2020-present github/seyoon20087
-    #
-    # This program is free software: you can redistribute it and/or modify
-    # it under the terms of the GNU General Public License as published by
-    # the Free Software Foundation, either version 3 of the License, or
-    # (at your option) any later version.
-    #
-    # This program is distributed in the hope that it will be useful,
-    # but WITHOUT ANY WARRANTY; without even the implied warranty of
-    # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    # GNU General Public License for more details.
-    #
-    # You should have received a copy of the GNU General Public License
-    # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-	echo ""
-	echo 'Copyright (C) 2020-present github/seyoon20087
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.'
-	echo ""
-}
 
 Escape_Variables()
 {
@@ -145,7 +127,7 @@ Check_Volume_Support()
 		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool on a supported system."${erase_style}
 
 		Input_On
-		exit
+		exit 1
 	fi
 }
 
@@ -162,7 +144,7 @@ Check_Resources()
 		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool with the required resources."${erase_style}
 
 		Input_On
-		exit
+		exit 1
 	fi
 }
 
@@ -189,7 +171,7 @@ Check_Write()
 		echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Run this tool with a writable save folder."${erase_style}
 
 		Input_On
-		exit
+		exit 1
 	fi
 }
 
@@ -197,49 +179,54 @@ Input_Version()
 {
 	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ What operation would you like to run?"${erase_style}
 	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/ Input an operation number."${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     1 - Big Sur"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     2 - Catalina"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     3 - Mojave"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     4 - High Sierra"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     5 - Sierra"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     6 - El Capitan"${erase_style}
-	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     7 - Yosemite"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     1 - Monterey (Beta)"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     2 - Big Sur"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     3 - Catalina"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     4 - Mojave"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     5 - High Sierra"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     6 - Sierra"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     7 - El Capitan"${erase_style}
+	echo -e $(date "+%b %m %H:%M:%S") ${text_message}"/     8 - Yosemite"${erase_style}
 
 
 	Input_On
 	read -e -p "$(date "+%b %m %H:%M:%S") / " operation_version
 	Input_Off
 
-	
+
 	if [[ $operation_version == "1" ]]; then
-		installer_choice="bs"
-	fi
-
-	if [[ $operation_version == "2" ]]; then
-		installer_choice="c"
-	fi
-
-	if [[ $operation_version == "3" ]]; then
 		installer_choice="m"
 	fi
 
+	if [[ $operation_version == "2" ]]; then
+		installer_choice="bs"
+	fi
+
+	if [[ $operation_version == "3" ]]; then
+		installer_choice="c"
+	fi
+
 	if [[ $operation_version == "4" ]]; then
-		installer_choice="hs"
+		installer_choice="m"
 	fi
 
 	if [[ $operation_version == "5" ]]; then
-		installer_choice="s"
+		installer_choice="hs"
 	fi
 
 	if [[ $operation_version == "6" ]]; then
-		installer_choice="ec"
+		installer_choice="s"
 	fi
 
 	if [[ $operation_version == "7" ]]; then
+		installer_choice="ec"
+	fi
+
+	if [[ $operation_version == "8" ]]; then
 		installer_choice="y"
 	fi
 
-	if [[ $operation_version == "1" ]]; then
+	if [[ $operation_version == [1-2] ]]; then
 		Import_Catalog
 		Import_Second_Catalog
 		Download_Installer_3
@@ -247,14 +234,14 @@ Input_Version()
 		Import_Second_Catalog
 	fi
 
-	if [[ $operation_version == [2-4] ]]; then
+	if [[ $operation_version == [3-5] ]]; then
 		Import_Catalog
 		Import_Second_Catalog
 		Input_Download
 		Import_Second_Catalog
 	fi
 
-	if [[ $operation_version == [5-7] ]]; then
+	if [[ $operation_version == [6-8] ]]; then
 		Import_Catalog
 		Import_Second_Catalog
 		Download_Installer_2
@@ -649,7 +636,6 @@ End()
 	exit
 }
 
-Show_License
 Input_Off
 Escape_Variables
 Parameter_Variables

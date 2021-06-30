@@ -71,8 +71,8 @@ bs_combo_update_key="null"
 mn_update_option="0"
 mn_combo_update_option="0"
 
-mn_installer_url="https://swcdn.apple.com/content/downloads/38/12/071-51840-A_R2JDKNM0LX/wqollynqs6j5006166tvw4rliu9htf7swu/InstallAssistant.pkg"
-mn_installer_name="Install macOS 12 Beta"
+mn_installer_url="https://swcdn.apple.com/content/downloads/54/23/071-59953-A_U9D4NB05NR/nqzt71pnylsuux326a4vqexb33oz0auhas/InstallAssistant.pkg"
+mn_installer_name="Install macOS Monterey Beta"
 mn_installer_version="12.0"
 
 mn_update_url="null"
